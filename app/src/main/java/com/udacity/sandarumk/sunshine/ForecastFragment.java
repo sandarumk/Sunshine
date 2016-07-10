@@ -39,6 +39,7 @@ import java.util.SimpleTimeZone;
 public class ForecastFragment extends Fragment {
 
     private static final String TAG = ForecastFragment.class.getSimpleName();
+    ArrayAdapter<String> mForecastAdapter;
 
     public ForecastFragment() {
     }
@@ -63,21 +64,32 @@ public class ForecastFragment extends Fragment {
         data.add("Sat 6/28 - TRAPPED IN WEATHERSTATION - 23/18");
         data.add("Sun 6/29 - Sunny - 20/7");
 
-        ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity(), R.layout.list_item_forcast,R.id.list_item_forecast_textview,data);
+        mForecastAdapter = new ArrayAdapter(getActivity(), R.layout.list_item_forcast,R.id.list_item_forecast_textview,data);
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         ListView listView = (ListView) rootView.findViewById(R.id.list_view_forecast);
-        listView.setAdapter(arrayAdapter);
+        listView.setAdapter(mForecastAdapter);
 
 
         return rootView;
 
-
     }
 
-    public class FetchWeatherClass extends AsyncTask {
+    public class FetchWeatherClass extends AsyncTask<String, Void, String[]>{
 
         private final String LOG_TAG = FetchWeatherClass.class.getSimpleName();
 
+
+        @Override
+        protected void onPostExecute(String[] result) {
+            if (result !=null){
+                mForecastAdapter.clear();
+                for (String weatherDataforDay:result){
+                    mForecastAdapter.add(weatherDataforDay);
+                }
+
+            }
+
+        }
 
         /**
          * Prepare the weather high/lows for presentation.
@@ -155,15 +167,12 @@ public class ForecastFragment extends Fragment {
                 resultStrs[i] = day + " - " + description + " - " + highAndLow;
             }
 
-            for (String s : resultStrs) {
-                Log.v(LOG_TAG, "Forecast entry: " + s);
-            }
             return resultStrs;
 
         }
 
         @Override
-        protected String[] doInBackground(Object... params) {
+        protected String[] doInBackground(String... params) {
 
 
             String postalCode = (String) params[0];
@@ -195,7 +204,7 @@ public class ForecastFragment extends Fragment {
                 //URL url = new URL(baseurl.concat(apiKey));
                 URL url = new URL(buildUri.toString());
 
-                Log.v(LOG_TAG, "Built URI " + buildUri.toString());
+               // Log.v(LOG_TAG, "Built URI " + buildUri.toString());
 
                 // create the HTTP connection and connect
                 httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -223,7 +232,7 @@ public class ForecastFragment extends Fragment {
 
                 forecastJsonString = stringBuffer.toString();
 
-                Log.v(LOG_TAG,"Forecast JSON String "+ forecastJsonString);
+               // Log.v(LOG_TAG,"Forecast JSON String "+ forecastJsonString);
 
             }catch (ProtocolException protocolex){
                 protocolex.printStackTrace();

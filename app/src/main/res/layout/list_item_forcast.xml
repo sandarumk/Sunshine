@@ -9,5 +9,5 @@
         android:text="@string/list_item_forecast"
         android:id="@+id/list_item_forecast_textview"
         android:layout_gravity="center"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent" />
 </LinearLayout>

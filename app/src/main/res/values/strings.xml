@@ -6,4 +6,5 @@
     <string name="temp_high">21&#x2103;</string>
     <string name="weather_image">Weather</string>
     <string name="list_item_forecast">Today - Sunny - 88/63</string>
+    <string name= "refresh">Refresh</string>
 </resources>
