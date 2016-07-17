@@ -28,7 +28,11 @@ public class DetailActivityFragment extends Fragment {
 
         View rootview = inflater.inflate(R.layout.fragment_detail, container, false);
         TextView textView = (TextView) rootview.findViewById(R.id.text_view_detail_Weather);
-        textView.setText(getActivity().getIntent().getExtras().getString(Intent.EXTRA_TEXT));
+        Intent detailViewInent = getActivity().getIntent();
+        if (detailViewInent!=null && detailViewInent.hasExtra(Intent.EXTRA_TEXT)){
+            textView.setText(getActivity().getIntent().getExtras().getString(Intent.EXTRA_TEXT));
+        }
+
         return rootview;
     }
 }
