@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        android:title= "@string/perf_general_edit_text_location"
+        android:key="@string/perf_general_edit_text_key"
+        android:defaultValue="@string/perf_general_location_default_value"
+        android:inputType= "text"
+        android:singleLine="true"/>
+
+</PreferenceScreen>

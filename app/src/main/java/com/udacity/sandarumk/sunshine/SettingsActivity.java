@@ -18,6 +18,8 @@ import android.view.MenuItem;
 
 import java.util.List;
 
+import static com.udacity.sandarumk.sunshine.R.xml.pref_general;
+
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
  * handset devices, settings are presented as a single list. On tablets,
@@ -55,6 +57,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 // For all other preferences, set the summary to the value's
                 // simple string representation.
                 preference.setSummary(stringValue);
+
+
             }
             return true;
         }
@@ -94,6 +98,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupActionBar();
+        addPreferencesFromResource(R.xml.pref_general);
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.perf_general_edit_text_key)));
     }
 
     /**
@@ -156,7 +162,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            //addPreferencesFromResource(R.xml.pref_general);
+            addPreferencesFromResource(pref_general);
             setHasOptionsMenu(true);
 
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
@@ -193,8 +199,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
-            // guidelines.
-            bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
+            // guidelines.indPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
         }
 
         @Override

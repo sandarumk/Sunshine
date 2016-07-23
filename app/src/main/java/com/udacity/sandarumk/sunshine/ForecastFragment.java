@@ -1,9 +1,11 @@
 package com.udacity.sandarumk.sunshine;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -39,6 +41,7 @@ import java.util.SimpleTimeZone;
  * A placeholder fragment containing a simple view.
  */
 public class ForecastFragment extends Fragment {
+    public static final String PREFS_NAME = "LocationPreference";
 
     private static final String TAG = ForecastFragment.class.getSimpleName();
     ArrayAdapter<String> mForecastAdapter;
@@ -58,14 +61,6 @@ public class ForecastFragment extends Fragment {
 
         //Adding dummy data for the list view
         List<String> data = new ArrayList<String>();
-        data.add("Mon 6/23 - Sunny - 31/17");
-        data.add("Tue 6/24 - Foggy - 21/8");
-        data.add("Wed 6/25 - Cloudy - 22/17");
-        data.add("Thurs 6/26 - Rainy - 18/11");
-        data.add("Fri 6/27 - Foggy - 21/10");
-        data.add("Sat 6/28 - TRAPPED IN WEATHERSTATION - 23/18");
-        data.add("Sun 6/29 - Sunny - 20/7");
-
         mForecastAdapter = new ArrayAdapter(getActivity(), R.layout.list_item_forcast,R.id.list_item_forecast_textview,data);
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         ListView listView = (ListView) rootView.findViewById(R.id.list_view_forecast);
@@ -87,6 +82,13 @@ public class ForecastFragment extends Fragment {
         return rootView;
 
     }
+    @Override
+    public void onStart(){
+        super.onStart();
+        updateWeather();
+    }
+
+
 
     public class FetchWeatherClass extends AsyncTask<String, Void, String[]>{
 
@@ -291,11 +293,19 @@ public class ForecastFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.action_refresh){
-            new FetchWeatherClass().execute("94043");
+            updateWeather();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public void updateWeather(){
+        SharedPreferences settingsPreference = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+        Log.d(TAG, "updateWeather: location"+ settingsPreference.getString(getString(R.string.perf_general_edit_text_key),getString(R.string.perf_general_location_default_value)));
+        new FetchWeatherClass().execute(settingsPreference.getString(getString(R.string.perf_general_edit_text_key),getString(R.string.perf_general_location_default_value)));
+    }
+
+
 
 
 }
