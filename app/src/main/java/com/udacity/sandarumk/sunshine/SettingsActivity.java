@@ -100,6 +100,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         setupActionBar();
         addPreferencesFromResource(R.xml.pref_general);
         bindPreferenceSummaryToValue(findPreference(getString(R.string.perf_general_edit_text_key)));
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.perf_general_list_key)));
     }
 
     /**

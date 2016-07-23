@@ -125,7 +125,7 @@ public class ForecastFragment extends Fragment {
          * Fortunately parsing is easy:  constructor takes the JSON string and converts it
          * into an Object hierarchy for us.
          */
-        private String[] getWeatherDataFromJson(String forecastJsonStr, int numDays)
+        private String[] getWeatherDataFromJson(String forecastJsonStr, int numDays, String mentric)
                 throws JSONException {
 
             // These are the names of the JSON objects that need to be extracted.
@@ -179,12 +179,21 @@ public class ForecastFragment extends Fragment {
                 double high = temperatureObject.getDouble(OWM_MAX);
                 double low = temperatureObject.getDouble(OWM_MIN);
 
+                if (!mentric.equalsIgnoreCase(getString(R.string.perf_general_list_default))){
+                    high = convertToImperial(high);
+                    low = convertToImperial(low);
+                }
+
                 highAndLow = formatHighLows(high, low);
                 resultStrs[i] = day + " - " + description + " - " + highAndLow;
             }
 
             return resultStrs;
 
+        }
+
+        public double convertToImperial(double temp){
+            return ((temp)*(5/9.0)+32);
         }
 
         @Override
@@ -269,12 +278,14 @@ public class ForecastFragment extends Fragment {
                     }
                 }
             }
+            metric = params[1];
             try {
-                return getWeatherDataFromJson(forecastJsonString,noOfDays);
+                return getWeatherDataFromJson(forecastJsonString,noOfDays,metric);
             } catch (JSONException e) {
                 Log.e(LOG_TAG,e.getMessage(),e);
                 e.printStackTrace();
             }
+
 
             return null;
         }
@@ -299,12 +310,23 @@ public class ForecastFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public void updateWeather(){
-        SharedPreferences settingsPreference = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-        Log.d(TAG, "updateWeather: location"+ settingsPreference.getString(getString(R.string.perf_general_edit_text_key),getString(R.string.perf_general_location_default_value)));
-        new FetchWeatherClass().execute(settingsPreference.getString(getString(R.string.perf_general_edit_text_key),getString(R.string.perf_general_location_default_value)));
+    public void updateWeather() {
+        new FetchWeatherClass().execute(changeLocation(),recalculateTemp());
     }
 
+    public String recalculateTemp(){
+        SharedPreferences tempPreference = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+        String tempUnit = tempPreference.getString(getString(R.string.perf_general_list_key),getString(R.string.perf_general_location_default_value));
+        Log.d(TAG,"recalculateTemp: temp unit "+tempUnit);
+        return tempUnit;
+    }
+
+    public String changeLocation(){
+        SharedPreferences settingsPreference = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+        String location = settingsPreference.getString(getString(R.string.perf_general_edit_text_key), getString(R.string.perf_general_location_default_value));
+        Log.d(TAG, "updateWeather: location" + location);
+        return location;
+    }
 
 
 

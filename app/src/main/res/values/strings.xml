@@ -60,7 +60,8 @@
     <string name="perf_general_edit_text_key" translatable="false">location</string>
     <string name="perf_general_location_default_value" translatable="false">94043</string>
     
-    <string name="perf_general_check_box_temperature_unit">Temperature Unit</string>
-    <string name="perf_general_check_box_key" translatable="false">tempunit</string>
+    <string name="perf_general_list_temperature_unit">Temperature Unit</string>
+    <string name="perf_general_list_key" translatable="false">tempunit</string>
+    <string name="perf_general_list_default" translatable="false">Metric</string>
 
 </resources>
