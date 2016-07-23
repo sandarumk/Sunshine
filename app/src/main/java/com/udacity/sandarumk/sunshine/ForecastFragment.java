@@ -322,8 +322,8 @@ public class ForecastFragment extends Fragment {
     }
 
     public String changeLocation(){
-        SharedPreferences settingsPreference = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-        String location = settingsPreference.getString(getString(R.string.perf_general_edit_text_key), getString(R.string.perf_general_location_default_value));
+        SharedPreferences locationPreference = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+        String location = locationPreference.getString(getString(R.string.perf_general_edit_text_key), getString(R.string.perf_general_location_default_value));
         Log.d(TAG, "updateWeather: location" + location);
         return location;
     }

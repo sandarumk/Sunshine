@@ -1,7 +1,10 @@
 package com.udacity.sandarumk.sunshine;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -37,8 +40,24 @@ public class MainActivity extends AppCompatActivity {
             Intent settingsIntent = new Intent(this,SettingsActivity.class);
             startActivity(settingsIntent);
             return true;
+        }else if (id == R.id.action_view_location){
+            viewLocation();
         }
 
+
         return super.onOptionsItemSelected(item);
+    }
+
+    public void viewLocation(){
+        SharedPreferences locationPreference = PreferenceManager.getDefaultSharedPreferences(this);
+        String location = locationPreference.getString(getString(R.string.perf_general_edit_text_key), getString(R.string.perf_general_location_default_value));
+        Uri geoLocation = Uri.parse("geo:0,0?").buildUpon()
+                .appendQueryParameter("q", location)
+                .build();
+        Intent viewLocationIntent = new Intent(Intent.ACTION_VIEW);
+        viewLocationIntent.setData(geoLocation);
+        if (viewLocationIntent.resolveActivity(getPackageManager())!=null){
+            startActivity(viewLocationIntent);
+        }
     }
 }
